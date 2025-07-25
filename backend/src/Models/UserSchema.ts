@@ -21,6 +21,9 @@ const UserSchema = new Schema(
       type: String,
       require: true,
     },
+    emailOtp: {
+      type: String, 
+    },
     role: {
       type: String,
       enum: ["intern", "trainer", "admin"],

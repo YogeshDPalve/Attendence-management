@@ -1,3 +1,5 @@
+import { ObjectId } from "mongoose";
+
 export type NewUser = {
   name: string;
   email: string;
@@ -7,7 +9,7 @@ export type NewUser = {
   role: string;
 };
 export type UserType = {
-  _id?: string;
+  _id?: ObjectId;
   name: string;
   email: string;
   gender?: string;
@@ -18,12 +20,19 @@ export type UserType = {
   profileImage?: string;
   trainerId?: string;
   courseId: string;
-  location: {
-    lon: number;
-    lat: number;
-  };
   isActive?: number;
   isDelete?: number;
+  emailOtp?: string;
   createdAt?: Date;
   updatedAt?: Date;
 } | null;
+
+export type UserProfile = {
+  id: ObjectId;
+  name?: string;
+  email?: string;
+  gender?: string;
+  phoneNumber?: string;
+  birthDate?: string;
+  profileImage?: string;
+};

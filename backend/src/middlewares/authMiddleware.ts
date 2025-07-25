@@ -16,7 +16,7 @@ const verifyToken = (roles: string[] = []) => {
 
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      console.log(decoded);
+      // console.log(decoded);
       // Find user by decoded id
       const user: UserType = await UserModel.findById(decoded.userId);
 
