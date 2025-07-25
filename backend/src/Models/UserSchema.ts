@@ -24,6 +24,7 @@ const UserSchema = new Schema(
     role: {
       type: String,
       enum: ["intern", "trainer", "admin"],
+      default: "intern",
       require: true,
     },
     birthDate: {

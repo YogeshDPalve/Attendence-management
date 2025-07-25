@@ -10,6 +10,7 @@ import { UserModel } from "../../Models/UserSchema";
 import { UserType } from "../../types/types";
 import { AttendenceModel } from "../../Models/AttendenceSchema";
 import { verifyUserLocation } from "../../Utils/veriyLocation";
+import { generateToken } from "../../Utils/jwtToken";
 
 const maxDistanceMeters = Number(process.env.MAXDISATNCEINMETERS);
 const longitude = Number(process.env.LONGITUDE);
@@ -59,9 +60,9 @@ export const userLogin = async (req: Request, res: Response) => {
       loginTime: Date.now(),
       present: true,
     });
-    return res
-      .status(200)
-      .send(successWithData("login successfull", checkUser));
+
+    generateToken(res, checkUser, `Welcome back ${checkUser.name}`);
+    // return res.status(200).send(successWithData("login successfull", checkUser));
   } catch (error) {
     console.log("Internal server error : ", error);
     return res.status(500).send(errorWithData("Internal server error", error));

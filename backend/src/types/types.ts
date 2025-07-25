@@ -4,6 +4,7 @@ export type NewUser = {
   phoneNumber: string;
   password: string;
   courseId: string;
+  role: string;
 };
 export type UserType = {
   _id?: string;

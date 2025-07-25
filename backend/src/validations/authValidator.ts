@@ -1,4 +1,9 @@
-import { body, validationResult } from "express-validator";
+import {
+  body,
+  Result,
+  ValidationError,
+  validationResult,
+} from "express-validator";
 import { Request, Response, NextFunction } from "express";
 import { errorWithData } from "../Utils/apiResponce";
 
@@ -20,15 +25,16 @@ export const userLoginValidator = [
     .withMessage("Password must be at least 8 characters long"),
 
   body("lat")
-    .notEmpty()
-    .withMessage("lattitude is required")
+    .optional()
+    // .notEmpty()
+    // .withMessage("lattitude is required")
     .isFloat()
     .withMessage("lattitude must be float number")
     .toFloat(),
 
   body("lon")
-    .notEmpty()
-    .withMessage("longitude is required")
+    .optional() // .notEmpty()
+    // .withMessage("longitude is required")
     .isFloat()
     .withMessage("longitude must be float number")
     .toFloat(),
@@ -73,20 +79,6 @@ export const newUserValidator = [
     .isLength({ min: 10, max: 10 })
     .withMessage("phone Number must be 10 digits long"),
 
-  // body("lat")
-  //   .notEmpty()
-  //   .withMessage("lattitude is required")
-  //   .isFloat()
-  //   .withMessage("lattitude must be float number")
-  //   .toFloat(),
-
-  // body("lon")
-  //   .notEmpty()
-  //   .withMessage("longitude is required")
-  //   .isFloat()
-  //   .withMessage("longitude must be float number")
-  //   .toFloat(),
-
   body("courseId")
     .notEmpty()
     .withMessage("course Id is required")
@@ -96,7 +88,7 @@ export const newUserValidator = [
     .withMessage("Inavalid course Id"),
 
   (req: Request, res: Response, next: NextFunction) => {
-    const errors = validationResult(req);
+    const errors: Result<ValidationError> = validationResult(req);
     if (!errors.isEmpty()) {
       return res
         .status(422)
