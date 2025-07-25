@@ -7,7 +7,11 @@ export const generateToken = (
   user: UserType,
   message: string
 ) => {
-  const token = jwt.sign({ userId: user?._id , role: user?.role}, process.env.JWT_SECRET, { expiresIn: "1d"});
+  const token = jwt.sign(
+    { userId: user?._id, role: user?.role },
+    process.env.JWT_SECRET,
+    { expiresIn: "1d" }
+  );
 
   return res
     .status(200)

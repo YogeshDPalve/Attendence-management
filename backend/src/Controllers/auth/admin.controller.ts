@@ -23,7 +23,10 @@ export const addUser = async (
       courseId,
       role = "intern",
     }: NewUser = req.body || {};
-
+    const already = await UserModel.findOne({ email, isDelete: 0 });
+    if (already) {
+      return res.status(400).send(errorWithoutData("User already exists"));
+    }
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
     const newUser = await UserModel.create({
