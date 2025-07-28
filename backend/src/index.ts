@@ -4,6 +4,8 @@ import morgan from "morgan";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import authRoutes from "./Routes/auth/index.route";
+import userRoutes from "./Routes/user/index.route";
+
 import { connectDb } from "./Database/db";
 
 dotenv.config();
@@ -19,6 +21,7 @@ app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/auth", authRoutes);
+app.use("/api/user", userRoutes);
 
 app.get("/", (_, res: Response) => {
   try {

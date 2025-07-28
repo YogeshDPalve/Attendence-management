@@ -13,5 +13,6 @@ export const validateRequest = (
       .status(422)
       .json(errorWithData("Validation Error", errors.array()));
   }
+  console.log("From validation");
   next();
 };

@@ -1,12 +1,19 @@
 import { body } from "express-validator";
-export const idValidator = (value: string = "id") =>
-  body(`${value}`)
-    .notEmpty()
-    .withMessage(`${value} is required `)
-    .isString()
-    .withMessage(`${value} id must be a string`)
-    .isMongoId()
-    .withMessage("Invalid Mongo id");
+export const idValidator = body("id")
+  .notEmpty()
+  .withMessage(`id is required `)
+  .isString()
+  .withMessage(`id must be a string`)
+  .isMongoId()
+  .withMessage("Invalid Mongo id");
+
+export const trainerIdValidator = body("trainerId")
+  .notEmpty()
+  .withMessage(`trainerId is required `)
+  .isString()
+  .withMessage(`trainerId must be a string`)
+  .isMongoId()
+  .withMessage("Invalid Mongo id");
 
 export const profileImageValidator = body("profileImage")
   .notEmpty()
@@ -94,10 +101,14 @@ export const limitValidator = body("limit")
   .withMessage("limit value must be positive number")
   .toInt();
 
-export const stringValidator = (value: string) =>
-  body(`${value}`)
-    .notEmpty()
-    .withMessage(`${value} is required`)
-    .isString()
-    .withMessage(`${value} must be a string`)
-    .toString();
+export const reasonValidator = body("reason")
+  .notEmpty()
+  .withMessage("reason is required")
+  .isString()
+  .withMessage("reason must be a string");
+
+export const leaveTypeValidator = body("leave_type")
+  .notEmpty()
+  .withMessage("leave_type is required")
+  .isString()
+  .withMessage("leave_type must be a string");

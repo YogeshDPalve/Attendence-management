@@ -7,6 +7,7 @@ import {
 import authMiddleware from "../../../middlewares/authMiddleware";
 import {
   createLeavesVaildator,
+  // createLeavesVaildator,
   getLeavesVaildator,
 } from "../../../validations/leaveValidator";
 
@@ -26,7 +27,7 @@ router.post(
   authMiddleware.verifyIntern,
   createLeaveApplications
 );
-router.post(
+router.delete(
   "/delete",
   authMiddleware.authenticateToken,
   authMiddleware.verifyIntern,

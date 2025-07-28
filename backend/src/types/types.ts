@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { ObjectId } from "mongoose";
 
 export type NewUser = {
@@ -23,6 +24,20 @@ export type UserType = {
   isActive?: number;
   isDelete?: number;
   emailOtp?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+} | null;
+
+export type LeaveType = {
+  _id?: Types.ObjectId;
+  userId: Types.ObjectId;
+  reason?: string;
+  status?: 0 | 1 | 2; // 2 = default
+  remark?: string;
+  leave_type?: string;
+  trainerId: Types.ObjectId;
+  isActive?: number; // 1 = default
+  isDelete?: number; // 0 = default
   createdAt?: Date;
   updatedAt?: Date;
 } | null;

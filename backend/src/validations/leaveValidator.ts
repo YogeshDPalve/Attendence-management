@@ -1,10 +1,12 @@
 import {
   idValidator,
+  leaveTypeValidator,
   limitValidator,
   pageValidator,
+  reasonValidator,
   serachValidator,
   statusValidator,
-  stringValidator,
+  trainerIdValidator,
 } from "./common";
 import { validateRequest } from "./validator";
 
@@ -18,9 +20,9 @@ export const getLeavesVaildator = [
 ];
 
 export const createLeavesVaildator = [
-  idValidator("id"),
-  stringValidator("reason"),
-  stringValidator("leave_type"),
-  idValidator("trainerId"),
+  idValidator,
+  reasonValidator,
+  leaveTypeValidator,
+  trainerIdValidator,
   validateRequest,
 ];

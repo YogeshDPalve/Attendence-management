@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
 import { LeaveModel } from "../../../Models/LeaveSchema";
-import { ObjectId } from "mongoose";
+import { isValidObjectId, ObjectId } from "mongoose";
 import {
   errorWithData,
   errorWithoutData,
   successWithData,
   successWithoutData,
 } from "../../../Utils/apiResponce";
-import { CreateLeaveType, GetQuery } from "../../../types/types";
+import { CreateLeaveType, GetQuery, LeaveType } from "../../../types/types";
 type Query = {
   userId: ObjectId;
   isDelete: number;
@@ -53,7 +53,7 @@ export const getLeaveApplications = async (req: Request, res: Response) => {
 export const createLeaveApplications = async (req: Request, res: Response) => {
   const { id, reason, leave_type, trainerId }: CreateLeaveType = req.body;
   try {
-    await LeaveModel.create({
+    const leave = await LeaveModel.create({
       userId: id,
       reason,
       leave_type,
@@ -61,7 +61,9 @@ export const createLeaveApplications = async (req: Request, res: Response) => {
     });
     return res
       .status(200)
-      .send(successWithoutData("Your request for leave placed successfully"));
+      .send(
+        successWithData("Your request for leave placed successfully", leave)
+      );
   } catch (error) {
     console.log(error);
     return res.status(500).send(errorWithData("Internal server error", error));
@@ -69,11 +71,24 @@ export const createLeaveApplications = async (req: Request, res: Response) => {
 };
 export const removeLeaveApplications = async (req: Request, res: Response) => {
   const { id }: { id: ObjectId } = req.body;
-  if (!id) {
-    return res.status(404).send(errorWithoutData("Id not found"));
+  if (!id || !isValidObjectId(id)) {
+    return res
+      .status(404)
+      .send(errorWithoutData("Id not found or invalid mongo id"));
   }
   try {
-    await LeaveModel.findByIdAndUpdate(id, { isDelete: 1, isActive: 0 });
+    const leave: LeaveType = await LeaveModel.findOneAndUpdate(
+      { _id: id, isDelete: 0 },
+      {
+        isDelete: 1,
+        isActive: 0,
+      }
+    );
+    if (!leave) {
+      return res
+        .status(404)
+        .send(errorWithoutData("Your leave request not found"));
+    }
     return res
       .status(200)
       .send(successWithoutData("Your request for leave deleted successfully"));
