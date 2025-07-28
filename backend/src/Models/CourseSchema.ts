@@ -15,6 +15,8 @@ const CourseSchema = new Schema(
       type: Number,
       require: true,
     },
+    isActive: { type: Number, default: 1 },
+    isDelete: { type: Number, default: 0 },
   },
   { timestamps: true }
 );

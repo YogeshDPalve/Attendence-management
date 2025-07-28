@@ -38,6 +38,8 @@ const AttendenceSchema = new Schema(
       type: String,
       default: 0,
     },
+    isActive: { type: Number, default: 1 },
+    isDelete: { type: Number, default: 0 },
   },
   { timestamps: true }
 );

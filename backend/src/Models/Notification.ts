@@ -20,6 +20,8 @@ const CourseSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    isActive: { type: Number, default: 1 },
+    isDelete: { type: Number, default: 0 },
   },
   { timestamps: true }
 );

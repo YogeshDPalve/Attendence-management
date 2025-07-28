@@ -36,3 +36,18 @@ export type UserProfile = {
   birthDate?: string;
   profileImage?: string;
 };
+
+export type GetQuery = {
+  id: ObjectId;
+  search: string;
+  filter?: 0 | 1 | 2;
+  page: number;
+  limit: number;
+};
+
+export type CreateLeaveType = {
+  id: ObjectId;
+  reason: string;
+  leave_type: string;
+  trainerId: ObjectId;
+};

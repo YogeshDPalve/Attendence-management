@@ -24,6 +24,8 @@ const LeaveSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "User",
     },
+    isActive: { type: Number, default: 1 },
+    isDelete: { type: Number, default: 0 },
   },
   { timestamps: true }
 );
