@@ -3,6 +3,7 @@ import { LeaveModel } from "../../../Models/LeaveSchema";
 import { ObjectId } from "mongoose";
 import {
   errorWithData,
+  errorWithoutData,
   successWithData,
   successWithoutData,
 } from "../../../Utils/apiResponce";
@@ -14,7 +15,7 @@ type Query = {
   status?: 0 | 1 | 2;
 };
 export const getLeaveApplications = async (req: Request, res: Response) => {
-  const { id, search = "", filter, page = 1, limit = 10 }: GetQuery = req.body;
+  const { id, search = "", status, page = 1, limit = 10 }: GetQuery = req.body;
   try {
     let query: Query = {
       userId: id,
@@ -25,8 +26,8 @@ export const getLeaveApplications = async (req: Request, res: Response) => {
         { remark: { $regex: search, $options: "i" } },
       ],
     };
-    if (filter) {
-      query.status = filter;
+    if (status) {
+      query.status = status;
     }
     const [totalCount, data] = await Promise.all([
       LeaveModel.countDocuments(query),
@@ -68,6 +69,9 @@ export const createLeaveApplications = async (req: Request, res: Response) => {
 };
 export const removeLeaveApplications = async (req: Request, res: Response) => {
   const { id }: { id: ObjectId } = req.body;
+  if (!id) {
+    return res.status(404).send(errorWithoutData("Id not found"));
+  }
   try {
     await LeaveModel.findByIdAndUpdate(id, { isDelete: 1, isActive: 0 });
     return res

@@ -5,17 +5,23 @@ import {
   removeLeaveApplications,
 } from "../../../Controllers/user/leaveApplication/leaveApp.controller";
 import authMiddleware from "../../../middlewares/authMiddleware";
+import {
+  createLeavesVaildator,
+  getLeavesVaildator,
+} from "../../../validations/leaveValidator";
 
 const router: Router = Router();
 
 router.get(
   "/list",
+  getLeavesVaildator,
   authMiddleware.authenticateToken,
   authMiddleware.verifyIntern,
   getLeaveApplications
 );
 router.post(
   "/create",
+  createLeavesVaildator,
   authMiddleware.authenticateToken,
   authMiddleware.verifyIntern,
   createLeaveApplications

@@ -40,7 +40,7 @@ export type UserProfile = {
 export type GetQuery = {
   id: ObjectId;
   search: string;
-  filter?: 0 | 1 | 2;
+  status?: 0 | 1 | 2;
   page: number;
   limit: number;
 };

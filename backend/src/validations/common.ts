@@ -1,11 +1,12 @@
 import { body } from "express-validator";
-export const idValidator = body("id")
-  .notEmpty()
-  .withMessage("Id is required")
-  .isString()
-  .withMessage("id must be a string")
-  .isMongoId()
-  .withMessage("Invalid Mongo id");
+export const idValidator = (value: string = "id") =>
+  body(`${value}`)
+    .notEmpty()
+    .withMessage(`${value} is required `)
+    .isString()
+    .withMessage(`${value} id must be a string`)
+    .isMongoId()
+    .withMessage("Invalid Mongo id");
 
 export const profileImageValidator = body("profileImage")
   .notEmpty()
@@ -70,3 +71,33 @@ export const lonValidator = body("lon")
   .isFloat()
   .withMessage("Longitude must be a float number")
   .toFloat();
+
+export const serachValidator = body("search")
+  .optional()
+  .isString()
+  .withMessage("search value must be string");
+
+export const pageValidator = body("page")
+  .optional()
+  .isInt({ min: 0 })
+  .withMessage("page value must be positive number");
+
+export const statusValidator = body("status")
+  .optional()
+  .isIn([1, 0, 2])
+  .withMessage("status value must be positive number 0,1,2")
+  .toInt();
+
+export const limitValidator = body("limit")
+  .optional()
+  .isInt({ min: 1 })
+  .withMessage("limit value must be positive number")
+  .toInt();
+
+export const stringValidator = (value: string) =>
+  body(`${value}`)
+    .notEmpty()
+    .withMessage(`${value} is required`)
+    .isString()
+    .withMessage(`${value} must be a string`)
+    .toString();
