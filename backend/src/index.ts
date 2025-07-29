@@ -5,6 +5,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import authRoutes from "./Routes/auth/index.route";
 import userRoutes from "./Routes/user/index.route";
+import adminRoutes from "./Routes/admin/index.route";
 
 import { connectDb } from "./Database/db";
 
@@ -22,6 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/admin", adminRoutes);
 
 app.get("/", (_, res: Response) => {
   try {

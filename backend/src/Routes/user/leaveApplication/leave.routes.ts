@@ -7,7 +7,6 @@ import {
 import authMiddleware from "../../../middlewares/authMiddleware";
 import {
   createLeavesVaildator,
-  // createLeavesVaildator,
   getLeavesVaildator,
 } from "../../../validations/leaveValidator";
 

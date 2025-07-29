@@ -58,6 +58,8 @@ export type GetQuery = {
   status?: 0 | 1 | 2;
   page: number;
   limit: number;
+  fromDate: string;
+  toDate: string;
 };
 
 export type CreateLeaveType = {

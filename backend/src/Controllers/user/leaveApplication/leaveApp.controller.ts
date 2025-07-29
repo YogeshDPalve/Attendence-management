@@ -11,11 +11,20 @@ import { CreateLeaveType, GetQuery, LeaveType } from "../../../types/types";
 type Query = {
   userId: ObjectId;
   isDelete: number;
-  $or: any[];
+  $or?: any[];
   status?: 0 | 1 | 2;
+  createdAt?: any;
 };
 export const getLeaveApplications = async (req: Request, res: Response) => {
-  const { id, search = "", status, page = 1, limit = 10 }: GetQuery = req.body;
+  const {
+    id,
+    search = "",
+    status,
+    page = 1,
+    limit = 10,
+    fromDate,
+    toDate,
+  }: GetQuery = req.body;
   try {
     let query: Query = {
       userId: id,
@@ -29,9 +38,16 @@ export const getLeaveApplications = async (req: Request, res: Response) => {
     if (status) {
       query.status = status;
     }
+    // if (fromDate || toDate) {
+    //   query.createdAt = {};
+    //   if (fromDate) query.createdAt.$gte = new Date(`${fromDate} 00:00`);
+    //   if (toDate) query.createdAt.$lte = new Date(`${toDate} 23:59`);
+    // }
     const [totalCount, data] = await Promise.all([
       LeaveModel.countDocuments(query),
       LeaveModel.find(query)
+        .select("userId reason status leaveType createdAt updatedAt")
+        .populate("userId", "name email phoneNumber")
         .sort({ createdAt: -1 })
         .skip((page - 1) * limit)
         .limit(limit)
