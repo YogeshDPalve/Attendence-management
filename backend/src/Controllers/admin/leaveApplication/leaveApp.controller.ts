@@ -13,8 +13,12 @@ export const getSingleLeaveApplications = async (
   req: Request,
   res: Response
 ) => {
-  const { id }: GetQuery = req.body || {};
-
+  const { id } = req.query || {};
+  if (!id || !isValidObjectId(id)) {
+    return res
+      .status(404)
+      .send(errorWithoutData("Id not found or invalid mongo id"));
+  }
   try {
     const data = await LeaveModel.findById(id)
       .select("userId reason status leaveType createdAt updatedAt")
@@ -69,7 +73,6 @@ export const getLeaveApplications = async (req: Request, res: Response) => {
           $or: [
             { leaveType: searchRegex },
             { reason: searchRegex },
-            { remark: searchRegex },
             { "user.name": searchRegex },
             { "user.email": searchRegex },
             { "user.phoneNumber": searchRegex },
@@ -93,7 +96,6 @@ export const getLeaveApplications = async (req: Request, res: Response) => {
           status: 1,
           leaveType: 1,
           createdAt: 1,
-          updatedAt: 1,
         },
       },
     ];
@@ -129,7 +131,9 @@ export const updateLeaveApplications = async (req: Request, res: Response) => {
     const leave = await LeaveModel.findByIdAndUpdate(id, {
       status,
       remark,
-    });
+    }).select(
+      "userId reason status leave_type createdAt updatedAt remark"
+    );
     if (!leave) {
       return res.status(404).send(errorWithoutData("Leave request not found"));
     }

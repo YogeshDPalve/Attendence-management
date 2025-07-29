@@ -30,7 +30,7 @@ export type UserType = {
 
 export type LeaveType = {
   _id?: Types.ObjectId;
-  userId: Types.ObjectId;
+  userId: Types.ObjectId | UserType;
   reason?: string;
   status?: 0 | 1 | 2; // 2 = default
   remark?: string;
