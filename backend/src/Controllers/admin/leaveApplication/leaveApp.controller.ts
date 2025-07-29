@@ -7,7 +7,8 @@ import {
   successWithData,
   successWithoutData,
 } from "../../../Utils/apiResponce";
-import { GetQuery } from "../../../types/types";
+import { GetQuery, LeaveType } from "../../../types/types";
+import { sendEmail } from "../../../Utils/mailSender";
 
 export const getSingleLeaveApplications = async (
   req: Request,
@@ -131,15 +132,14 @@ export const updateLeaveApplications = async (req: Request, res: Response) => {
     const leave = await LeaveModel.findByIdAndUpdate(id, {
       status,
       remark,
-    }).select(
-      "userId reason status leave_type createdAt updatedAt remark"
-    );
+    })
+      .select("userId reason status leave_type createdAt updatedAt remark")
+      .populate({ path: "userId", select: "email name" });
     if (!leave) {
       return res.status(404).send(errorWithoutData("Leave request not found"));
     }
-    return res
-      .status(200)
-      .send(successWithData("Request for leave udpated successfully", leave));
+    const { name, email } = leave.userId as any;
+    return await sendEmail(email, name, status, remark, res);
   } catch (error) {
     console.log(error);
     return res.status(500).send(errorWithData("Internal server error", error));
