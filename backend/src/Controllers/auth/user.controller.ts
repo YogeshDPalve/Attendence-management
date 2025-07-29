@@ -12,6 +12,9 @@ import { AttendenceModel } from "../../Models/AttendenceSchema";
 import { verifyUserLocation } from "../../Utils/veriyLocation";
 import { generateToken } from "../../Utils/jwtToken";
 import { generateOTP, transporter } from "../../Utils/mailSender";
+import multer from "multer";
+import path from "path";
+import fs from "fs";
 
 const maxDistanceMeters = Number(process.env.MAXDISATNCEINMETERS);
 const longitude = Number(process.env.LONGITUDE);
@@ -173,4 +176,73 @@ export const resetPassword = async (req: Request, res: Response) => {
     console.log(error);
     return res.status(500).send(errorWithData("Internal Server Error ", error));
   }
+};
+
+const uploadDir = path.join(__dirname, "../..", "uploads");
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir);
+}
+
+// Configure storage
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, uploadDir);
+  },
+  filename: function (req, file, cb) {
+    const ext = path.extname(file.originalname);
+    const uniqueName = `profile-${Date.now()}${ext}`;
+    cb(null, uniqueName);
+  },
+});
+
+// File filter (optional)
+const fileFilter = (
+  req: Request,
+  file: Express.Multer.File,
+  cb: multer.FileFilterCallback
+) => {
+  const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+  if (allowedTypes.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(new Error("Only .jpg, .jpeg, and .png formats are allowed!"));
+  }
+};
+
+const upload = multer({
+  storage,
+  fileFilter,
+  limits: {
+    fileSize: 1 * 1024 * 1024, // 1 MB
+  },
+}).single("profile");
+
+// Controller
+export const uploadProfileImage = (req: Request, res: Response) => {
+  upload(req, res, (err) => {
+    if (err instanceof multer.MulterError) {
+      return res.status(400).json(errorWithoutData(err.message));
+    } else if (err) {
+      return res.status(400).json(errorWithoutData(err.message));
+    }
+
+    if (!req.file) {
+      return res
+        .status(400)
+        .json({ success: false, message: "No file uploaded." });
+    }
+
+    const filePath = `/uploads/${req.file.filename}`;
+
+    return res.status(200).json({
+      success: true,
+      message: "Profile image uploaded successfully.",
+      file: {
+        filename: req.file.filename,
+        path: filePath,
+        originalname: req.file.originalname,
+        mimetype: req.file.mimetype,
+      },
+    });
+  });
 };

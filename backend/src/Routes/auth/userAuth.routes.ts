@@ -4,6 +4,7 @@ import {
   resetPassword,
   sendOtp,
   updateProfile,
+  uploadProfileImage,
   userLogin,
 } from "../../Controllers/auth/user.controller";
 import { userLoginValidator } from "../../validations/authValidator";
@@ -14,6 +15,12 @@ const router = Router();
 router.post("/login", userLoginValidator, userLogin);
 router.post("/send-otp", sendOtp);
 router.post("/reset-password", resetPassword);
+router.post(
+  "/upload-profile",
+  authMiddleware.authenticateToken,
+  authMiddleware.verifyIntern,
+  uploadProfileImage
+);
 router.post(
   "/udpate-profile",
   authMiddleware.authenticateToken,
