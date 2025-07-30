@@ -6,7 +6,7 @@ import cookieParser from "cookie-parser";
 import authRoutes from "./Routes/auth/index.route";
 import userRoutes from "./Routes/user/index.route";
 import adminRoutes from "./Routes/admin/index.route";
-
+import "./Utils/cron";
 import { connectDb } from "./Database/db";
 
 dotenv.config();

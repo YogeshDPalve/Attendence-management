@@ -139,7 +139,7 @@ export const updateLeaveApplications = async (req: Request, res: Response) => {
       return res.status(404).send(errorWithoutData("Leave request not found"));
     }
     const { name, email } = leave.userId as any;
-    return await sendEmail(email, name, status, remark, res);
+    return await sendEmail("intern", email, name, status, remark, res);
   } catch (error) {
     console.log(error);
     return res.status(500).send(errorWithData("Internal server error", error));

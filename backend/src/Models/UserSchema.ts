@@ -22,7 +22,7 @@ const UserSchema = new Schema(
       require: true,
     },
     emailOtp: {
-      type: String, 
+      type: String,
     },
     role: {
       type: String,

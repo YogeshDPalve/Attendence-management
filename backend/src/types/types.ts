@@ -63,6 +63,7 @@ export type GetQuery = {
 };
 
 export type CreateLeaveType = {
+  name: string;
   id: ObjectId;
   reason: string;
   leave_type: string;

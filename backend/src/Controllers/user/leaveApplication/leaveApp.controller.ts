@@ -8,6 +8,7 @@ import {
   successWithoutData,
 } from "../../../Utils/apiResponce";
 import { CreateLeaveType, GetQuery, LeaveType } from "../../../types/types";
+import { sendEmail } from "../../../Utils/mailSender";
 type Query = {
   userId: ObjectId;
   isDelete: number;
@@ -15,6 +16,9 @@ type Query = {
   status?: 0 | 1 | 2;
   createdAt?: any;
 };
+
+const adminEmail = process.env.ADMIN_EMAIL as string;
+
 export const getLeaveApplications = async (req: Request, res: Response) => {
   const {
     id,
@@ -67,7 +71,7 @@ export const getLeaveApplications = async (req: Request, res: Response) => {
   }
 };
 export const createLeaveApplications = async (req: Request, res: Response) => {
-  const { id, reason, leave_type, trainerId }: CreateLeaveType = req.body;
+  const { id, reason, leave_type, trainerId, name }: CreateLeaveType = req.body;
   try {
     const leave = await LeaveModel.create({
       userId: id,
@@ -75,11 +79,13 @@ export const createLeaveApplications = async (req: Request, res: Response) => {
       leave_type,
       trainerId,
     });
-    return res
-      .status(200)
-      .send(
-        successWithData("Your request for leave placed successfully", leave)
-      );
+
+    return await sendEmail("admin", adminEmail, name, 2, "", res);
+    // return res
+    //   .status(200)
+    //   .send(
+    //     successWithData("Your request for leave placed successfully", leave)
+    //   );
   } catch (error) {
     console.log(error);
     return res.status(500).send(errorWithData("Internal server error", error));

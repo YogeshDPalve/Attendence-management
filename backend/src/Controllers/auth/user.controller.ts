@@ -15,11 +15,11 @@ import { generateOTP, transporter } from "../../Utils/mailSender";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
-
+import { todayMidnight } from "../../Utils/others";
+const uploadDir = path.join(__dirname, "../..", "uploads");
 const maxDistanceMeters = Number(process.env.MAXDISATNCEINMETERS);
 const longitude = Number(process.env.LONGITUDE);
 const lattitude = Number(process.env.LATTITUDE);
-console.log(maxDistanceMeters);
 
 // login
 export const userLogin = async (req: Request, res: Response) => {
@@ -62,13 +62,34 @@ export const userLogin = async (req: Request, res: Response) => {
         .status(400)
         .send(errorWithoutData("You are not matechs office location"));
     }
-    await AttendenceModel.create({
-      date: Date.now(),
-      userId: checkUser._id,
-      loginTime: Date.now(),
-      present: true,
-    });
-
+    const attendence = await AttendenceModel.findOneAndUpdate(
+      { userId: checkUser._id, createdAt: { $gt: todayMidnight } },
+      {
+        loginTime: Date.now(),
+        present: true,
+        location: {
+          lat: lat,
+          lon: lon,
+        },
+      }
+    );
+    if (!attendence) {
+      const attendence = await AttendenceModel.create({
+        date: Date.now(),
+        userId: checkUser._id,
+        loginTime: Date.now(),
+        present: true,
+        location: {
+          lat: lat,
+          lon: lon,
+        },
+      });
+      if (!attendence) {
+        return res
+          .status(500)
+          .send(errorWithoutData("Unable to create attendence"));
+      }
+    }
     generateToken(res, checkUser, `Welcome back ${checkUser.name}`);
     // return res.status(200).send(successWithData("login successfull", checkUser));
   } catch (error) {
@@ -178,7 +199,6 @@ export const resetPassword = async (req: Request, res: Response) => {
   }
 };
 
-const uploadDir = path.join(__dirname, "../..", "uploads");
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir);
 }
@@ -195,7 +215,6 @@ const storage = multer.diskStorage({
   },
 });
 
-// File filter (optional)
 const fileFilter = (
   req: Request,
   file: Express.Multer.File,
@@ -232,17 +251,10 @@ export const uploadProfileImage = (req: Request, res: Response) => {
         .json({ success: false, message: "No file uploaded." });
     }
 
-    const filePath = `/uploads/${req.file.filename}`;
-
     return res.status(200).json({
       success: true,
       message: "Profile image uploaded successfully.",
-      file: {
-        filename: req.file.filename,
-        path: filePath,
-        originalname: req.file.originalname,
-        mimetype: req.file.mimetype,
-      },
+      file: req.file.filename,
     });
   });
 };
