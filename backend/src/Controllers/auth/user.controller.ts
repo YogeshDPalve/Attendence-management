@@ -16,7 +16,9 @@ import multer from "multer";
 import path from "path";
 import fs from "fs";
 import { todayMidnight } from "../../Utils/others";
+import { isValidObjectId, ObjectId } from "mongoose";
 const uploadDir = path.join(__dirname, "../..", "uploads");
+
 const maxDistanceMeters = Number(process.env.MAXDISATNCEINMETERS);
 const longitude = Number(process.env.LONGITUDE);
 const lattitude = Number(process.env.LATTITUDE);
@@ -92,6 +94,35 @@ export const userLogin = async (req: Request, res: Response) => {
     }
     generateToken(res, checkUser, `Welcome back ${checkUser.name}`);
     // return res.status(200).send(successWithData("login successfull", checkUser));
+  } catch (error) {
+    console.log("Internal server error : ", error);
+    return res.status(500).send(errorWithData("Internal server error", error));
+  }
+};
+export const userLogout = async (req: Request, res: Response) => {
+  try {
+    const { id }: { id: ObjectId } = req.body;
+
+    const attendence = await AttendenceModel.findOne({
+      userId: id,
+      createdAt: { $gt: todayMidnight },
+    });
+    if (!attendence || !attendence.loginTime) {
+      return res
+        .status(404)
+        .send(errorWithoutData("Attendence not found or login time not found"));
+    }
+    const loginTime = new Date(attendence.loginTime);
+    const now = new Date();
+
+    const diffMs = now.getTime() - loginTime.getTime(); // milliseconds
+    const totalHours = (diffMs / (1000 * 60 * 60)).toFixed(2); // convert to hours, keep 2 decimals
+
+    attendence.logoutTime = now;
+    attendence.totalHours = totalHours;
+    await attendence.save();
+
+    return res.status(200).send(successWithoutData("logout successfull"));
   } catch (error) {
     console.log("Internal server error : ", error);
     return res.status(500).send(errorWithData("Internal server error", error));
