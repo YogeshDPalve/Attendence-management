@@ -1,9 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand+SC&family=Playwrite+AU+QLD:wght@100..400&family=Rubik:ital,wght@0,300..900;1,300..900&family=Winky+Sans:ital@0;1&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
-
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --font-winky: "Winky Sans", sans-serif;
+  --font-pat: "Patrick Hand SC", "cursive";
+  --font-play: "Playwrite AU QLD", "cursive";
+  --font-rubic: "Rubik", sans-serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -57,7 +61,7 @@
   --accent-foreground: oklch(0.141 0.005 285.823);
   --destructive: oklch(0.63683 0.20776 25.32589);
   --destructive-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.96955 0 0);
+  --muted: oklch(50.676% 0.00006 271.152);
   --muted-foreground: oklch(0.141 0.005 285.823);
   --border: oklch(0.91944 0.00664 2.0443);
   --input: oklch(0.91944 0.00664 2.0443);
