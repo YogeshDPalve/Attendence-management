@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Link } from "react-router-dom";
 export default function LogoutButton() {
   return (
     <Tooltip>
@@ -75,9 +76,11 @@ export default function LogoutButton() {
                 <DialogClose asChild>
                   <Button variant="outline">Cancel</Button>
                 </DialogClose>
-                <Button type="submit" className={"text-gray-100"}>
-                  Continue
-                </Button>
+                <Link to={"/login"}>
+                  <Button type="submit" className={"text-gray-100"}>
+                    Continue
+                  </Button>
+                </Link>
               </DialogFooter>
             </DialogContent>
           </form>

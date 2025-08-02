@@ -7,7 +7,7 @@ const HeroSection = () => {
       <h1 className="text-rose-400 text-4xl font-bold tracking-wide text-center mt-16">
         Attendence app
       </h1>
-      <ModeToggle />
+   
     </div>
   );
 };

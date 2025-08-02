@@ -10,6 +10,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { NavLink } from "react-router-dom";
+import { ModeToggle } from "./mode-toggle";
 
 const navItems = [
   {
@@ -72,19 +73,8 @@ const Sidebar = () => {
       ))}
 
       {/* LogOut icon (visible only on larger screens, if desired) */}
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <button>
-            <LogOut
-              size={23}
-              className="text-rose-300 hover:text-rose-400 transition-colors duration-300"
-            />
-          </button>
-        </TooltipTrigger>
-        <TooltipContent side="right" sideOffset={8}>
-          Log Out
-        </TooltipContent>
-      </Tooltip>
+
+      <ModeToggle />
     </div>
   );
 };

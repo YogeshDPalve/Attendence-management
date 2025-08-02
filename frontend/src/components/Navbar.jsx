@@ -1,11 +1,21 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import LogoutButton from "./ui/new-button";
-const Navbar = () => {
+
+const pathToTitleMap = {
+  "/dashboard": "Dashboard",
+  "/analytics": "Analytics",
+  "/leave": "Leave Application",
+};
+
+const Navbar = ({ path }) => {
+  const title = useMemo(() => {
+    return pathToTitleMap[path] || "Dashboard";
+  }, [path]);
   return (
     <div className="m-4 border rounded-xl p-3 shadow-lg flex items-center justify-between">
       <div className="md:text-3xl text-2xl  font-bold font-winky mx-4 text-primary tracking-wide">
-        Dashboard
+        {title}
       </div>
       <div className="flex">
         <div className="mx-4 md:flex items-center gap-3  hidden">

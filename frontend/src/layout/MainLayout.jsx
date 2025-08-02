@@ -14,7 +14,7 @@ const MainLayout = () => {
     <div className="flex flex-row min-h-screen bg-accent">
       {!shouldHideNavbar && <Sidebar />}
       <div className="flex-1">
-        {!shouldHideNavbar && <Navbar />}
+        {!shouldHideNavbar && <Navbar path={location.pathname} />}
 
         <Outlet />
       </div>
