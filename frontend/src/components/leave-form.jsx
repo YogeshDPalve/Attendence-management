@@ -20,11 +20,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "./ui/button";
+import FileUpload from "./file-upload";
 
 export function LeaveForm({ className, ...props }) {
   return (
     <div className={cn("flex flex-col gap-6 ", className)} {...props}>
-      <Card className="px-4 shadow-lg">
+      <Card className="md:px-4 shadow-lg">
         <CardHeader>
           <CardTitle className="md:text-2xl text-xl text-primary font-bold">
             Leave Application
@@ -36,13 +37,13 @@ export function LeaveForm({ className, ...props }) {
         <CardContent>
           <form>
             <div className="grid md:grid-cols-2 gap-5 mb-4">
-              <div>
+              <div className="flex flex-col gap-2">
                 <div className="flex items-center">
                   <Label htmlFor="password">Name</Label>
                 </div>
                 <Input id="name" type="text" required placeholder="Your name" />
               </div>
-              <di>
+              <div className="flex flex-col gap-2">
                 <Label htmlFor="trainer">Trainer</Label>
                 <Select>
                   <SelectTrigger className="w-full">
@@ -58,8 +59,25 @@ export function LeaveForm({ className, ...props }) {
                     </SelectGroup>
                   </SelectContent>
                 </Select>
-              </di>
-              <div>
+              </div>
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="trainer">Leave Type</Label>
+                <Select>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select Leave type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectItem value="apple">Medical Leave</SelectItem>
+                      <SelectItem value="banana">Functional Leave</SelectItem>
+                      <SelectItem value="blueberry">Emergency Leave</SelectItem>
+                      <SelectItem value="grapes">Exam Leave</SelectItem>
+                      <SelectItem value="pineapple">Other</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
+              {/* <div className="flex flex-col gap-2">
                 <div className="flex items-center">
                   <Label htmlFor="password">Reason</Label>
                 </div>
@@ -69,10 +87,10 @@ export function LeaveForm({ className, ...props }) {
                   required
                   placeholder="Reason for leave"
                 />
-              </div>
-              <div>
-                <div className="flex items-center">
-                  <Label htmlFor="password">
+              </div> */}
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center  ">
+                  <Label htmlFor="text">
                     Duration<span className="font-normal">(days)</span>
                   </Label>
                 </div>
@@ -83,7 +101,11 @@ export function LeaveForm({ className, ...props }) {
                   placeholder="Duration in days"
                 />
               </div>
-              <div>
+              <div className="flex flex-col gap-2 col-span-2">
+                <Label htmlFor="email">Attachements</Label>
+                <FileUpload />
+              </div>
+              <div className="flex flex-col gap-2 col-span-2">
                 <Label htmlFor="email">Description</Label>
                 <Textarea
                   id="reason"
@@ -93,6 +115,7 @@ export function LeaveForm({ className, ...props }) {
                 />
               </div>
             </div>
+
             <div>
               {/* <SlideButton /> */}
               <Button type="submit" className="w-50 text-gray-100 shadow-md">
