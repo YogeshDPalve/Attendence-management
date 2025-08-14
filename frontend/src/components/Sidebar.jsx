@@ -50,7 +50,7 @@ const Sidebar = () => {
         gap-3 md:gap-8 
         px-4 py-2 md:p-4 
         z-50
-        dark:bg-primary-foreground
+        dark:bg-primary-foreground/30 backdrop-blur-sm
         
       "
     >
