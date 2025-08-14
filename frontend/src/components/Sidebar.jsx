@@ -39,9 +39,10 @@ const Sidebar = () => {
       className="
         md:w-17
         fixed bottom-0 left-0 right-0 h-16 
-        md:static   md:min-h-[95vh] md:ml-10
-        m-4 md:m-4
-
+         md:h-[92vh] md:ml-10
+        m-4 md:m-4      
+        md:fixed  
+        md:top-4 md:left-4 md:bottom-4 
         bg-white border rounded-xl 
         shadow-xl shadow-rose-300 
         flex flex-row md:flex-col 

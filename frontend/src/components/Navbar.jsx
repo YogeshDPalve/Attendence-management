@@ -13,7 +13,11 @@ const Navbar = ({ path }) => {
     return pathToTitleMap[path] || "Dashboard";
   }, [path]);
   return (
-    <div className="my-4  border rounded-xl p-3 shadow-lg flex items-center justify-between">
+    <div
+      className="
+     fixed top-4 md:top-4 left-1 right-1 md:left-32  z-40 
+    my-3 md:mx-10   bg-white/30 dark:bg-primary-foreground/30 backdrop-blur-sm   mx-1 border rounded-xl p-3 shadow-lg flex items-center justify-between"
+    >
       <div className="md:text-3xl text-2xl  font-bold font-winky mx-4 text-primary tracking-wide">
         {title}
       </div>
