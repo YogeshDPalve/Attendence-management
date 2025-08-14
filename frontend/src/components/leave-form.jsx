@@ -75,7 +75,7 @@ export function LeaveForm({ className, ...props }) {
                       <SelectItem value="pineapple">Other</SelectItem>
                     </SelectGroup>
                   </SelectContent>
-                </Select>
+                </Select>         
               </div>
               {/* <div className="flex flex-col gap-2">
                 <div className="flex items-center">
