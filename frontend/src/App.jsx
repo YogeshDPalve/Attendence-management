@@ -11,6 +11,8 @@ import HeroSection from "./pages/HeroSection";
 import UserDashboard from "./pages/user/UserDashboard";
 import Analytics from "./pages/user/Analytics";
 import LeavePage from "./pages/user/LeavePage";
+
+
 const appRouter = createBrowserRouter([
   {
     path: "/",
@@ -115,6 +117,7 @@ const appRouter = createBrowserRouter([
     ],
   },
 ]);
+
 function App() {
   return (
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
